@@ -76,7 +76,7 @@ replace dadal = 1 if dadal == . & biodad == 1
 *--- R2.2 Variable construction ---*
 
 * X: treatment variables (no orphans in R2 by construction)
-gen ronda      = 2
+gen ronda = 2
 gen orphanhood = 0
 gen orphan_dad = 0
 gen orphan_mom = 0
@@ -90,9 +90,7 @@ drop _merge
 
 *--- R2.3 Save ---*
 
-keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 save muestra_r2.dta, replace
 
@@ -103,15 +101,13 @@ save muestra_r2.dta, replace
 
 use "R3\pe_yc_childlevel.dta", clear
 
-* Restrict to children active in R2 (drops R1/R2 deceased parents and R2-R3 attrition)
+* Restrict to children active in R2 (drop R1/R2 deceased parents and R2-R3 attrition)
 merge 1:1 childid using muestra_r2.dta
 keep if _merge == 3
 drop _merge
 
 * Drop R2 variables before merging R3 data
-drop ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+drop ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 * Merge household-level file (parental information stored separately in R3)
 merge 1:1 childid using "R3\pe_yc_householdlevel.dta"
@@ -121,7 +117,7 @@ drop _merge
 *--- R3.2 Variable construction ---*
 
 * X: treatment variables
-gen ronda      = 3
+gen ronda = 3
 gen orphanhood = 0
 replace orphanhood = 1 if dadalr3 == 0 | mumalr3 == 0
 gen orphan_dad = 0
@@ -143,9 +139,7 @@ drop _merge
 
 *--- R3.3 Save ---*
 
-keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 save muestra_r3.dta, replace
 
@@ -181,7 +175,7 @@ drop _merge
 *--- R4.2 Variable construction ---*
 
 * X: treatment variables
-gen ronda      = 4
+gen ronda = 4
 gen orphanhood = 0
 replace orphanhood = 1 if DADALR4 == 0 | MUMALR4 == 0
 gen orphan_dad = 0
@@ -209,9 +203,7 @@ drop ENRSCHR4
 
 *--- R4.3 Save ---*
 
-keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 save muestra_r4.dta, replace
 
@@ -235,9 +227,7 @@ keep if _merge == 3
 drop _merge
 
 * Drop R4 variables before merging R5 data
-drop ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+drop ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 * Merge household-level file (parental information stored separately in R5)
 merge 1:1 childid using "R5\R5_ychousehold.dta"
@@ -247,7 +237,7 @@ drop _merge
 *--- R5.2 Variable construction ---*
 
 * X: treatment variables
-gen ronda      = 5
+gen ronda = 5
 gen orphanhood = 0
 replace orphanhood = 1 if DADALR5 == 0 | MUMALR5 == 0
 gen orphan_dad = 0
@@ -275,9 +265,7 @@ drop ENRSCHR5
 
 *--- R5.3 Save ---*
 
-keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ ///
-     horas_sleep horas_care horas_chores horas_paywork horas_npaywork ///
-     horas_study horas_school estudia
+keep childid ronda orphanhood orphan_dad orphan_mom gasto_educ horas_sleep horas_care horas_chores horas_paywork horas_npaywork horas_study horas_school estudia
 
 save muestra_r5.dta, replace
 
@@ -300,7 +288,7 @@ append using muestra_r5.dta
 * Some children appear to "revive" a deceased parent across rounds due to questionnaire errors (questions about parents changed from one survey to another). The affected IDs are corrected manually below.
 
 sort childid ronda
-bysort childid: egen suma     = total(orphanhood)
+bysort childid: egen suma = total(orphanhood)
 bysort childid: egen suma_dad = total(orphan_dad)
 bysort childid: egen suma_mom = total(orphan_mom)
 
@@ -359,8 +347,7 @@ drop acces*
 *--- 3.5 Clean time-use variables ---*
 
 * Values above 24 are coding errors (likely 88 = not applicable)
-foreach var of varlist horas_sleep horas_care horas_chores ///
-                       horas_npaywork horas_paywork horas_school horas_study {
+foreach var of varlist horas_sleep horas_care horas_chores horas_npaywork horas_paywork horas_school horas_study {
     replace `var' = . if `var' > 24
 }
 
