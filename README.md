@@ -3,7 +3,7 @@
 This repository contains code samples in various programming languages, showcasing my workflow across different types of projects. Each project is organized into its own folder:
 
 ## Web Scraping
-
+Includes tasks related to web scraping exercises usaing Python (Selenium library).
 
 ## Bachelor's Thesis
 Contains a Stata script used for data cleaning and preprocessing, alongside an R script where the main econometric models were executed.
